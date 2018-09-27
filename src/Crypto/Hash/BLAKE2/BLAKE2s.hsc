@@ -43,7 +43,7 @@ initialize :: Int
            -- ^ Output length in bytes
            -> BLAKE2sState
 initialize = initializer c_blake2s_init
-{-# INLINE initialize #-}
+{-# NOINLINE initialize #-}
 
 -- | Create a new keyed hashing state.
 initialize' :: Int
@@ -52,7 +52,7 @@ initialize' :: Int
             -- ^ Key
             -> BLAKE2sState
 initialize' = initializer' c_blake2s_init_key
-{-# INLINE initialize' #-}
+{-# NOINLINE initialize' #-}
 
 -- | Add data to the hashing state.
 update :: ByteString
@@ -61,7 +61,7 @@ update :: ByteString
        -- ^ Hashing state
        -> BLAKE2sState
 update = updater c_blake2s_update
-{-# INLINE update #-}
+{-# NOINLINE update #-}
 
 -- | Finalize the hashing state.
 finalize :: Int
@@ -70,7 +70,7 @@ finalize :: Int
          -- ^ Hashing state
          -> ByteString
 finalize = finalizer c_blake2s_final
-{-# INLINE finalize #-}
+{-# NOINLINE finalize #-}
 
 -- | Perform hashing all in one step. A common way of calling this function
 --   is @hash 32 mempty dataToHash@ for applications which do not require
@@ -83,7 +83,7 @@ hash :: Int
      -- ^ Data to hash
      -> ByteString
 hash = hasher c_blake2s
-{-# INLINE hash #-}
+{-# NOINLINE hash #-}
 
 foreign import ccall unsafe "blake2.h blake2s"
   c_blake2s :: HashFunc
