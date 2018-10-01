@@ -67,6 +67,7 @@ initializer f outlen = unsafePerformIO $ do
     if ret == 0
     then return fptr
     else error "initialization failure"
+{-# NOINLINE initializer #-}
 
 initializer' :: Storable a
              => InitKeyFunc a
@@ -83,6 +84,7 @@ initializer' f outlen key = unsafePerformIO $ do
       if ret == 0
       then return fptr
       else error "initialization failure"
+{-# NOINLINE initializer' #-}
 
 updater :: Storable a
         => UpdateFunc a
@@ -99,6 +101,7 @@ updater f d state = unsafePerformIO $ do
         copyArray nsptr sptr 1
         void $ f nsptr dptr dlen'
   return newState
+{-# NOINLINE updater #-}
 
 finalizer :: Storable a
           => FinalFunc a
@@ -113,6 +116,7 @@ finalizer f outlen state = unsafePerformIO $ do
         let outlen' = fromIntegral outlen
         copyArray nsptr sptr 1
         void $ f nsptr optr outlen'
+{-# NOINLINE finalizer #-}
 
 hasher :: HashFunc
        -> Int
@@ -127,4 +131,4 @@ hasher h outlen key input =
             ilen'   = fromIntegral ilen
             klen'   = fromIntegral klen
         in void $ h out istr kstr outlen' ilen' klen'
-{-# INLINE hasher #-}
+{-# NOINLINE hasher #-}
